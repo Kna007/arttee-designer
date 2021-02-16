@@ -121,8 +121,16 @@
               "devServerTarget": "arttee-designer:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
-  "defaultProject": "arttee-designer"
+    }
+  },
+  "defaultProject": "arttee-designer",
+  "cli": {
+    "analytics": false
+  }
 }

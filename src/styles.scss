@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:  Helvetica, sans-serif;
+}
+*:focus {
+    outline: none;
+    }
+    .line{
+        width: 100%;
+        height: 1px;
+        background-color: lightgray;
+    }
+
+:root{
+    --primary:#54AFC1;
+}
+.canvas-container{
+    position: absolute !important;
+    top:20%;
+    left:25%;
+}

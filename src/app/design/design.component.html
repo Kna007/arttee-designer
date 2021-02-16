@@ -1,0 +1,80 @@
+<div class="container" >
+
+<div class="header">
+    <h3>CUSTOMIZE</h3>
+    <div>COLOR : {{tshirtColor}}</div>
+    <div>$ {{price}}</div>
+</div>
+<div class="nameColorHolder">
+    <div class="designInput">
+        <label for="designName">Design's Name</label>
+        <input type="text"placeholder="CUSTOMIZE-TEE" name="designName" id="designName">
+    </div>
+    <div class="colorDropdown">
+        <label for="designName">Color</label>
+        <div class="selectedColor" (click)="showColorOption=!showColorOption">{{selectedColor}}</div>
+        <div class="colorOptionHolder" *ngIf="showColorOption">
+            <div class="colorOption" *ngFor="let color of colors" (click)="selectColor(color)">
+                {{color}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="drawArea" (click)="deselect($event)">
+    <div class="canvasesHolder" #canvasesHolder>
+        <canvas class="teeCanvas" #teeCanvas ></canvas>
+        <canvas class="drawCanvas" id="fabricCanvas"#fabricCanvas ></canvas>
+    </div>  
+</div>
+<div class="toolHolder">
+    <button (click)="uploadImage()">Upload</button>
+    <button (click)="flipSide()">{{selectedSide | titlecase}}</button>
+    <img src="/assets/text-outline.svg" alt="" (click)="addText()" >
+    <img src="/assets/crop-outline.svg" alt="" (click)="save()" [class.notActive]="!hasActiveObject">
+    <img src="/assets/trash-outline.svg" alt="" (click)="delete()" [class.notActive]="!hasActiveObject">
+    <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)" />
+</div>
+<div class="line"></div>
+<div class="textTools" (click)="preventDeselect($event)" *ngIf="hasActiveTextObject">
+    <div class="textAndColorHolder">
+        <input type="text" class="textInput" value="{{textValue}}" #text (keyup)="changeText($event)"/>
+        <input type="color" name="" #color value="#FFFFFF"(input)="changeTextColor($event)" />
+    </div>
+    <div class="textStyling">
+        <select name="" class="family" >
+            <option value="{{font}}" *ngFor="let font of fontList">{{font}}</option>
+        </select>
+        <select name="" #fontSize (change)="changeFontSize($event)" >
+            <option value="{{font}}" *ngFor="let font of [1,2,3,4]">{{font}}</option>
+        </select>
+        <div class="imgHolder">
+            <img src="/assets/bold.svg" alt="" (click)="changeTextStyling('bold')">
+            <img src="/assets/underline.svg" alt="" (click)="changeTextStyling('underline')">
+            <img src="/assets/italic.svg" alt=""(click)="changeTextStyling('italic')">
+        </div>
+
+    </div>
+</div>
+<div class="line" *ngIf="hasActiveTextObject"></div>
+<div class="layers">
+    <h5>LAYER</h5>
+    <ul class="layerList" #layerList>
+        <li *ngFor="let layer of listOfObjects">
+            <div class="listItemHolder" *ngIf="layer.text">
+                <img src="assets/text.svg" alt="">
+                <span>
+                    Text #1
+                </span>
+                <img src="assets/hamburger.png" class="hamburger" alt="">
+            </div>
+            <div class="listItemHolder" *ngIf="!layer.text">
+                <img src="assets/picture.svg" alt="">
+                <span>
+                    Image #1
+                </span>
+                <img src="assets/hamburger.png"class="hamburger" alt="">
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
