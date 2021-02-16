@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "customer-25881": {
+      "hosting": {
+        "arttee-designer": [
+          "customer-25881"
+        ]
+      }
+    }
+  }
+}
