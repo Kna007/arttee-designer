@@ -1,0 +1,119 @@
+.wrapper{
+    width:100%;
+    position: relative;
+    .profileAndCoverWrapper{
+        width:100%;
+        position: relative;
+        img{
+            background-color: lightgray;
+        }
+        .coverImg{
+            width:100%;
+            height: 150px;
+            overflow: hidden;
+        }
+        .profileImg{
+            width:100px;
+            height: 100px;
+            top:100%;
+            transform: translate(0%,-50%);
+            left:10%;
+            position: absolute;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+    }
+    .changeCoverModal{
+        position: absolute;
+        width: 100%;
+        top:0px;
+        left:0px;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.746);
+        .croppieWrapper{
+            width: 100%;
+            height: 300px;
+        }
+        .buttonWrapper{
+            width:50%;
+            margin: 40px auto;
+            text-align: center;
+            button{
+                width:100px;
+                margin: 10px auto;
+                padding: 10px 15px;
+                border:none;
+                border-radius: 10px;
+            }
+            .mainButton{
+                margin-right: 10px;
+                color:white;
+                background: black;
+            }
+        }
+
+    }
+    .designerInformationWrapper{
+        margin-top:80px;
+        margin-left:10%;
+        width: 80%;
+        .title{
+            display:block;
+        }
+        h1{
+            font-weight: 400;
+            font-size:20px;
+            font-family: 'Helvetica Neue';
+        }
+        h4{
+            font-weight: 400;
+            font-size: 16px;
+          color:rgb(133, 131, 131);  
+        }
+    
+        .description{
+            margin-top: 30px;
+            p, textarea{
+                font-size: 12px;
+                color: gray;
+                width: 80%;
+            }
+            textarea{
+                min-height: 200px;
+            }
+            .editButton{
+                border:none;
+                background-color: white;
+                margin-top: 5px;
+                float: right;
+            }
+        }
+        .logout{
+            margin-top: 20px;
+            border:none;
+            background-color: red;
+            color:white;
+            width: 100px;
+            padding: 10px 20px;
+
+        }
+    }
+    .uploadDesignInformationWrapper{
+        width:80%;
+        margin-left:10%;
+        .uploadDesignButton{
+            border:none;
+            padding: 5px 10px;
+            float: right;
+            font-weight: bold;
+            color:rgba(8, 243, 106, 0.698);
+            background:white;
+        }
+    }
+    .croppie-content{
+        margin-top: 130px;
+    }
+    .hidden{
+        display:none;
+    }
+}

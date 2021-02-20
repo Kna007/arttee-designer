@@ -1,0 +1,51 @@
+<div class="wrapper">
+    <div class="profileAndCoverWrapper">
+        <img *ngIf="profile.cover" class="coverImg" alt="" src="{{profile.cover}}" (click)="promptChangeCover()">
+        <img *ngIf="!profile.cover" class="coverImg" alt="" (click)="promptChangeCover()">
+        <img *ngIf="profile.profile" class="profileImg" src="{{profile.profile}}" (click)="promptChangeProfile()" alt="" >
+        <img *ngIf="!profile.profile" class="profileImg"  (click)="promptChangeProfile()" alt="" >
+    </div>
+    <div class="changeCoverModal" *ngIf="changeCoverModal" (click)="changeCoverModal = false">
+        <div class="croppieWrapper">
+            <div  #crop class="croppie-content">
+            </div>
+        </div>
+        <div class="buttonWrapper">
+            <button class="mainButton" (click)="confirmChangeCover()">Confirm</button>
+            <button (click)="changeCover=false">Cancel</button>
+        </div>
+    </div>
+    <div class="changeCoverModal" *ngIf="changeProfileModal" (click)="changeProfileModal = false">
+        <div class="croppieWrapper">
+            <div  #crop class="croppie-content">
+            </div>
+        </div>
+        <div class="buttonWrapper">
+            <button class="mainButton" (click)="confirmChangeProfile()">Confirm</button>
+            <button (click)="changeProfile=false" >Cancel</button>
+        </div>
+    </div>
+    <div class="designerInformationWrapper">
+        <div class="title">
+            <h1>  {{profile.displayName | uppercase}}</h1>
+            <h4>Since September 2020</h4>
+        </div>
+        <div class="description" *ngIf="!isEditingDescription">
+            <button class="editButton" (click)="isEditingDescription=true">Edit</button>
+            <p>{{profile.description}}</p>
+            
+        </div>
+        <div class="description" *ngIf="isEditingDescription">
+            <button class="editButton" (click)="changeDescription(newDescription.value)">Done</button>
+            <textarea #newDescription>{{profile.description}}</textarea>
+            
+        </div>
+        <button class="logout" (click)="logout()">Log Out</button>
+    </div>
+    <div class="uploadDesignInformationWrapper">
+        <button class="uploadDesignButton" (click)="uploadDesign()">Upload Design</button>
+    </div>
+    <input type="file" #coverImg class="hidden" (change)="changeCoverHandler(coverImg)">
+    <input type="file" #profileImg class="hidden" (change)="changeProfileHandler(profileImg)">
+
+</div>  

@@ -3,6 +3,8 @@ import { fabric } from "fabric";
 import { FirebaseService } from '../services/firebase.service';
 import { FontServiceService } from '../services/font-service.service';
 import Sortable from 'sortablejs';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
@@ -14,22 +16,25 @@ export class DesignComponent implements AfterViewInit {
   @ViewChild('fabricCanvas') fabricCanvas: ElementRef;
   @ViewChild('canvasesHolder') canvasesHolder: ElementRef;
   @ViewChild('imageInput') imageInput: ElementRef;
-  constructor(private firebaseService: FirebaseService, private fontService: FontServiceService) { 
+  @ViewChild('tagInput') tagInput: ElementRef; 
+  activeIndex: any;
+  isModalOpen = true;
+  constructor(private firebaseService: FirebaseService, private fontService: FontServiceService, private route: Router) { 
     this.fontList = this.fontService.fontList;
     
   }
-  number = 1;
   price = '9.99';
   fabricCtx;
   tshirtColor = 'Black';
   showColorOption =false;
-  colors = ["BLACK",'WHITE','NAVY BLUE','GREY'];
+  colors = ["BLACK",'WHITE','NAVY BLUE','GREY'];  
   selectedColor = "BLACK";
   selectedSide = 'front';
   designData = {
     front:{},
     back:{}
   }
+  tags = [];
   fontList;
   hasActiveObject;
   hasActiveTextObject;
@@ -55,10 +60,9 @@ export class DesignComponent implements AfterViewInit {
     let layerList = this.layerList.nativeElement;
     this.sortable = new Sortable(layerList,{
       onChange:(e)=>{
-        this.swapLayer(a,e.newIndex);
+        this.swapLayer(e.oldIndex,e.newIndex);
       }
     });
-    
   }
   setOldIndex(index){
     this.sortableOldIndex = index;
@@ -71,13 +75,23 @@ export class DesignComponent implements AfterViewInit {
       this.updateListOfObjects();
   
     })
+    
     this.fabricCtx.on("selection:created", (event)=>{
      if(this.fabricCtx.getActiveObject().type == 'textbox'){
         this.hasActiveTextObject = true;
       };
+      this.updateActiveIndex();
       this.hasActiveObject = true;
       this.fabricCtx.backgroundColor = 'rgba(100,100,100,0.1)';
     })
+    this.fabricCtx.on("selection:updated", (event)=>{
+      if(this.fabricCtx.getActiveObject().type == 'textbox'){
+         this.hasActiveTextObject = true;
+       };
+       this.updateActiveIndex();
+       this.hasActiveObject = true;
+       this.fabricCtx.backgroundColor = 'rgba(100,100,100,0.1)';
+     })
     this.fabricCtx.on("selection:cleared", (event)=>{
       this.fabricCtx.backgroundColor = 'rgba(0,0,0,0)';
       this.hasActiveObject = false;
@@ -131,6 +145,10 @@ export class DesignComponent implements AfterViewInit {
       }
     })
   }
+  updateActiveIndex(){
+    this.activeIndex =  this.fabricCtx.getObjects().indexOf(this.fabricCtx.getActiveObject())
+    console.log(this.activeIndex);
+  }
   drawTeeImage(color:String, side:String){
     let teeImage = new Image();
     teeImage.src = `/assets/${color.toUpperCase()}-${side.toUpperCase()}.png`;
@@ -150,6 +168,10 @@ export class DesignComponent implements AfterViewInit {
   }
   updateListOfObjects(){
     this.listOfObjects = this.fabricCtx.getObjects();
+  }
+  setActiveObject(index){
+    this.fabricCtx.setActiveObject(this.fabricCtx.item(index));
+    this.fabricCtx.renderAll();
   }
   addImage(readResult) {
     fabric.Image.fromURL(readResult, (img) => {
@@ -238,7 +260,7 @@ export class DesignComponent implements AfterViewInit {
   crop(){
 
   }
-  async delete() {
+  delete() {
     this.fabricCtx.remove(this.fabricCtx.getActiveObject());
     this.fabricCtx.renderAll();
   }
@@ -255,5 +277,26 @@ export class DesignComponent implements AfterViewInit {
       this.fabricCtx.loadFromJSON(this.designData.back, this.fabricCtx.renderAll.bind(this.fabricCtx));
     }
     this.drawTeeImage(this.selectedColor, this.selectedSide)
+  }
+  saveDesign(){
+    let json = this.fabricCtx.toJSON();
+    this.fabricCtx.clear();
+    this.fabricCtx.loadFromJSON(json);
+  }
+  routeTo(route){
+    this.route.navigate([`/${route}`])
+  }
+  processInput(text){
+    let commaIndex = text.indexOf(',');
+    if(commaIndex!=='0' && commaIndex != '-1'){
+
+      let tag = text.slice(0,commaIndex);
+      text = text.slice(commaIndex+1, text.length);
+      this.tags.push(tag);
+      this.tagInput.nativeElement.value = text;
+    }
+  }
+  removeTag(index){
+    this.tags.splice(index,1);
   }
 }
